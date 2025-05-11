@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>For My Love</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #111;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+      font-family: 'Arial', sans-serif;
+      cursor: pointer;
+    }
+
+    .container {
+      position: relative;
+      text-align: center;
+      z-index: 1;
+    }
+
+    .rose {
+      position: relative;
+      width: 200px;
+      height: 200px;
+      margin: 0 auto;
+    }
+
+    .petal {
+      position: absolute;
+      background-color: #e91e63;
+      border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+      box-shadow: 0 0 10px rgba(233, 30, 99, 0.7);
+      transition: all 1.5s ease-in-out;
+      opacity: 0;
+    }
+
+    .message-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.85);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 1s ease-in-out;
+      z-index: 10;
+      flex-direction: column;
+    }
+
+    .message {
+      color: #fff;
+      max-width: 300px;
+      padding: 30px;
+      background-color: rgba(0, 0, 0, 0.7);
+      border-radius: 10px;
+      border: 1px solid #e91e63;
+      box-shadow: 0 0 20px rgba(233, 30, 99, 0.5);
+      transform: scale(0.8);
+      transition: all 0.5s ease-in-out;
+      text-align: center;
+    }
+
+    .message h1 {
+      font-size: 2rem;
+      margin-bottom: 15px;
+      color: #e91e63;
+      text-shadow: 0 0 5px rgba(233, 30, 99, 0.5);
+    }
+
+    .message p {
+      font-size: 1.1rem;
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+
+    .hearts {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      top: 0;
+      left: 0;
+    }
+
+    .heart {
+      position: absolute;
+      pointer-events: none;
+      opacity: 0;
+      font-size: 20px;
+      color: #e91e63;
+    }
+
+    .btn {
+      background-color: #e91e63;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: all 0.3s;
+      box-shadow: 0 0 10px rgba(233, 30, 99, 0.7);
+      margin: 5px;
+    }
+
+    .btn:hover {
+      background-color: #c2185b;
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="rose" id="rose"></div>
+    <div class="hearts" id="hearts"></div>
+  </div>
+
+  <div class="message-container" id="messageContainer">
+    <div class="message" id="message">
+      <h1>For You, My Love</h1>
+      <p>Every petal of this rose represents a reason why I love you. You make my world more beautiful, just like this flower blooms to show its beauty.</p>
+      <button class="btn" id="closeBtn">Close</button>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const rose = document.getElementById('rose');
+      const messageContainer = document.getElementById('messageContainer');
+      const message = document.getElementById('message');
+      const heartsContainer = document.getElementById('hearts');
+      const closeBtn = document.getElementById('closeBtn');
+
+      function createRose() {
+        rose.innerHTML = '';
+        const petalCount = 30;
+        const centerSize = 30;
+
+        const center = document.createElement('div');
+        center.style.width = `${centerSize}px`;
+        center.style.height = `${centerSize}px`;
+        center.style.backgroundColor = '#ffeb3b';
+        center.style.borderRadius = '50%';
+        center.style.position = 'absolute';
+        center.style.top = '50%';
+        center.style.left = '50%';
+        center.style.transform = 'translate(-50%, -50%)';
+        center.style.boxShadow = '0 0 10px rgba(255, 235, 59, 0.7)';
+        center.style.opacity = '0';
+        rose.appendChild(center);
+
+        for (let i = 0; i < petalCount; i++) {
+          const petal = document.createElement('div');
+          petal.className = 'petal';
+          const angle = (i / petalCount) * Math.PI * 2;
+          const size = 30 + Math.random() * 20;
+
+          petal.style.width = `${size}px`;
+          petal.style.height = `${size * 1.5}px`;
+          petal.style.top = `calc(50% - ${size * 0.75}px)`;
+          petal.style.left = `calc(50% - ${size * 0.5}px)`;
+          petal.style.transform = `rotate(${angle}rad) translateX(0px)`;
+          petal.style.transformOrigin = 'center left';
+          const hue = 330 + Math.random() * 30;
+          petal.style.backgroundColor = `hsl(${hue}, 80%, 60%)`;
+          rose.appendChild(petal);
+        }
+
+        setTimeout(bloomRose, 500);
+      }
+
+      function bloomRose() {
+        const petals = document.querySelectorAll('.petal');
+        const center = rose.querySelector('div');
+
+        setTimeout(() => {
+          center.style.transition = 'opacity 1s ease-in-out';
+          center.style.opacity = '1';
+        }, 500);
+
+        petals.forEach((petal, index) => {
+          setTimeout(() => {
+            const angle = (index / petals.length) * Math.PI * 2;
+            const distance = 40 + Math.random() * 30;
+            const rotation = angle + (Math.random() * 0.5 - 0.25);
+            petal.style.opacity = '1';
+            petal.style.transform = `rotate(${rotation}rad) translateX(${distance}px)`;
+            petal.style.transition = 'all 1.5s ease-in-out';
+          }, 100 + index * 50);
+        });
+
+        setTimeout(createHearts, 2000);
+      }
+
+      function createHearts() {
+        const heartCount = 20;
+
+        for (let i = 0; i < heartCount; i++) {
+          setTimeout(() => {
+            const heart = document.createElement('div');
+            heart.className = 'heart';
+            heart.innerHTML = '❤️';
+            heart.style.fontSize = `${15 + Math.random() * 20}px`;
+            heart.style.left = `${Math.random() * 100}%`;
+            heart.style.top = `${Math.random() * 100}%`;
+
+            const keyframes = [
+              { transform: 'translateY(0) scale(1)', opacity: 0 },
+              { transform: 'translateY(0) scale(1)', opacity: 1 },
+              { transform: 'translateY(-100px) scale(1.5)', opacity: 0 }
+            ];
+
+            const options = {
+              duration: 3000 + Math.random() * 2000,
+              iterations: 1
+            };
+
+            heartsContainer.appendChild(heart);
+            heart.animate(keyframes, options);
+
+            setTimeout(() => {
+              heart.remove();
+            }, options.duration);
+          }, i * 300);
+        }
+      }
+
+      function showMessage() {
+        messageContainer.style.opacity = '1';
+        messageContainer.style.pointerEvents = 'auto';
+        message.style.transform = 'scale(1)';
+      }
+
+      function openLoveQuestion() {
+        message.innerHTML = `
+          <h1>Do You Love Me?</h1>
+          <button class="btn" id="btnYes">Yes, I love you</button>
+          <button class="btn" id="btnNo">No 😢</button>
+        `;
+
+        document.getElementById('btnYes').addEventListener('click', () => {
+          message.innerHTML = `
+            <h1>I love you too ❤️</h1>
+            <img src="https://gifdb.com/images/high/bubu-love-you-ozex1d7fqoggwo20.gif" width="250" style="border-radius:10px; box-shadow: 0 0 20px rgba(255, 105, 180, 0.5);"/>
+          `;
+        });
+
+        document.getElementById('btnNo').addEventListener('click', () => {
+          alert("Galat jawab 😒. Dobara socho!");
+          openLoveQuestion();
+        });
+      }
+
+      closeBtn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        openLoveQuestion();
+      });
+
+      createRose();
+      document.body.addEventListener('click', showMessage);
+    });
+  </script>
+</body>
+</html>
